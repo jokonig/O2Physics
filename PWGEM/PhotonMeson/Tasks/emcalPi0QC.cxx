@@ -51,7 +51,7 @@
 
 using namespace o2::framework;
 using namespace o2::framework::expressions;
-using collisionEvSelIt = o2::aod::Collision; //o2::soa::Filtered<o2::aod::Collisions>::iterator;
+using collisionEvSelIt = o2::aod::Collision; // o2::soa::Filtered<o2::aod::Collisions>::iterator;
 using selectedClusters = o2::soa::Filtered<o2::aod::EMCALClusters>;
 using selectedCluster = o2::soa::Filtered<o2::aod::EMCALCluster>;
 using selectedAmbiguousClusters = o2::soa::Filtered<o2::aod::EMCALAmbiguousClusters>;
