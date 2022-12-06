@@ -345,7 +345,7 @@ struct Pi0QCTask {
 
     // loop over all clusters from accepted collision
     for (const auto& cluster : clusters) {
-      
+
       // fill histograms of cluster properties
       // in this implementation the cluster properties are directly
       // loaded from the flat table, in the future one should
