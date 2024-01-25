@@ -248,8 +248,8 @@ struct EmcalCorrectionTask {
         if (static_cast<bool>(hasShaperCorrection)) {
           amplitude = o2::emcal::NonlinearityHandler::evaluateShaperCorrectionCellEnergy(amplitude);
         }
-        if(applyCellAbsScale){
-          amplitude*= GetAbsCellScale(cell.cellNumber());
+        if (applyCellAbsScale) {
+          amplitude *= GetAbsCellScale(cell.cellNumber());
         }
         cellsBC.emplace_back(cell.cellNumber(),
                              amplitude,
@@ -737,14 +737,15 @@ struct EmcalCorrectionTask {
     }
   }
 
-  float GetAbsCellScale(const int cellID){
+  float GetAbsCellScale(const int cellID)
+  {
     // Apply cell scale based on SM types (Full, Half (not used), EMC 1/3, DCal, DCal 1/3)
     // Same as in Run2 data
-    if(applyCellAbsScale == 1){ 
+    if (applyCellAbsScale == 1) {
       int iSM = mClusterizers.at(0)->getGeometry()->GetSuperModuleNumber(cellID);
       return vCellAbsScaleFactor.value[mClusterizers.at(0)->getGeometry()->GetSMType(iSM)];
 
-    // Apply cell scale based on columns to accoutn for material of TRD structures
+      // Apply cell scale based on columns to accoutn for material of TRD structures
     } else if (applyCellAbsScale == 2) {
       auto res = mClusterizers.at(0)->getGeometry()->GlobalRowColFromIndex(cellID);
       return vCellAbsScaleFactor.value[std::get<1>(res)];
