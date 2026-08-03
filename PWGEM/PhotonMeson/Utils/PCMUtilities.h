@@ -21,8 +21,8 @@
 
 #include <CommonConstants/MathConstants.h>
 #include <DetectorsBase/Propagator.h>
-#include <Framework/Concepts.h>
 #include <Framework/ASoA.h>
+#include <Framework/Concepts.h>
 #include <ReconstructionDataFormats/HelixHelper.h>
 #include <ReconstructionDataFormats/TrackParametrizationWithError.h>
 
