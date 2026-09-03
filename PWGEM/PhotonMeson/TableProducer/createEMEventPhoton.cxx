@@ -50,7 +50,7 @@ using namespace o2::soa;
 using MyBCs = soa::Join<aod::BCsWithTimestamps, aod::BcSels>;
 using MyQvectors = soa::Join<aod::QvectorFT0CVecs, aod::QvectorFT0AVecs, aod::QvectorFT0MVecs, aod::QvectorFV0AVecs, aod::QvectorBPosVecs, aod::QvectorBNegVecs, aod::QvectorBTotVecs>;
 
-using MyCollisions = soa::Join<aod::Collisions, aod::EvSels, aod::EMEvSels, aod::EMEoIs, aod::Mults>;
+using MyCollisions = soa::Join<aod::Collisions, aod::EvSels, aod::PMEvSels, aod::EMEoIs, aod::Mults>;
 using MyCollisionsCent = soa::Join<MyCollisions, aod::CentFT0Ms, aod::CentFT0As, aod::CentFT0Cs>; // centrality table has dependency on multiplicity table.
 using MyCollisionsCentQvec = soa::Join<MyCollisionsCent, MyQvectors>;
 
@@ -95,6 +95,7 @@ struct CreateEMEventPhoton {
   template <bool isMC, bool isTriggerAnalysis, EMEventType eventtype, typename TCollisions, typename TBCs>
   void skimEvent(TCollisions const& collisions, TBCs const&)
   {
+
     for (const auto& collision : collisions) {
       if constexpr (isMC) {
         if (!collision.has_mcCollision()) {
@@ -121,9 +122,9 @@ struct CreateEMEventPhoton {
           }
         }
         if constexpr (eventtype == EMEventType::kEvent_Cent || eventtype == EMEventType::kEvent_Cent_Qvec) {
-          event_norm_info(collision.selection_raw(), collision.rct_raw(), posZint16, static_cast<uint16_t>(collision.centFT0C() * 500.f));
+          event_norm_info(o2::aod::pmevsel::reduceSelectionBit(collision), collision.rct_raw(), posZint16, static_cast<uint16_t>(collision.centFT0C() * 500.f));
         } else {
-          event_norm_info(collision.selection_raw(), collision.rct_raw(), posZint16, static_cast<uint16_t>(105.f * 500.f));
+          event_norm_info(o2::aod::pmevsel::reduceSelectionBit(collision), collision.rct_raw(), posZint16, static_cast<uint16_t>(105.f * 500.f));
         }
       }
 
@@ -143,7 +144,7 @@ struct CreateEMEventPhoton {
         registry.fill(HIST("hEventCounter"), 2);
       }
 
-      event(collision.globalIndex(), bc.runNumber(), bc.globalBC(), collision.selection_raw(), collision.rct_raw(), bc.timestamp(),
+      event(collision.globalIndex(), bc.runNumber(), bc.globalBC(), o2::aod::pmevsel::reduceSelectionBit(collision), collision.rct_raw(), bc.timestamp(),
             collision.posZ(),
             collision.numContrib(), collision.trackOccupancyInTimeRange(), collision.ft0cOccupancyInTimeRange());
       eventalias(collision.alias_raw());
@@ -300,7 +301,7 @@ struct AssociatePhotonToEMEvent {
       for (int ig = 0; ig < ng; ig++) {
         eventIds(collision.globalIndex());
       } // end of photon loop
-    } // end of collision loop
+    }   // end of collision loop
   }
 
   // This struct is for both data and MC.

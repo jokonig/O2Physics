@@ -56,7 +56,7 @@ using namespace o2::soa;
 using namespace o2::aod::pwgem::photonmeson::utils::mcutil;
 using namespace o2::constants::physics;
 
-using MyCollisionsMC = soa::Join<aod::Collisions, aod::McCollisionLabels, aod::EvSels, aod::EMEvSels>;
+using MyCollisionsMC = soa::Join<aod::Collisions, aod::McCollisionLabels, aod::EvSels, aod::PMEvSels>;
 using TracksMC = soa::Join<aod::TracksIU, aod::McTrackLabels>;
 using FwdTracksMC = soa::Join<aod::FwdTracks, aod::McFwdTrackLabels>;
 using MyEMCClusters = soa::Join<aod::MinClusters, aod::EMCClusterMCLabels_001>;

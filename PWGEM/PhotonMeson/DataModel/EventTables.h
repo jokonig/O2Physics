@@ -58,7 +58,87 @@ enum EventSelectionFlags {
 };
 
 DECLARE_SOA_BITMAP_COLUMN(Selection, selection, 32); //! Bitmask of selection flags
-DECLARE_SOA_DYNAMIC_COLUMN(Sel8, sel8, [](uint32_t selection_bit) -> bool { return (selection_bit & BIT(o2::aod::pmevsel::kIsTriggerTVX)) && (selection_bit & BIT(o2::aod::pmevsel::kNoTimeFrameBorder)) && (selection_bit & BIT(o2::aod::pmevsel::kNoITSROFrameBorder)); });
+DECLARE_SOA_DYNAMIC_COLUMN(Sel8, sel8, [](uint32_t selection_bit, int runNumber = 500000) -> bool {
+  return (selection_bit & BIT(o2::aod::pmevsel::kIsTriggerTVX)) && (selection_bit & BIT(o2::aod::pmevsel::kNoTimeFrameBorder)) && (runNumber < 568873 ? (selection_bit & BIT(o2::aod::pmevsel::kNoITSROFrameBorder)) : true);
+});
+
+enum EventAcceptanceBits {
+  kAll = 0, // o2-linter: disable=magic-number (enum)
+  kHasMCColl,
+  kGoodZVtx,
+  kIsFT0AND,
+  kNoTFB,
+  kITSROFB,
+  kNoSameBunchPileUp,
+  kGoodZVtxFTOPV,
+  kNoCollInTimeRange,
+  kGoodTrackOccupancy,
+  kGoodFT0Occupancy,
+  kTVXInEMC,
+  kGoodCent,
+  kGoodRCT,
+  kGoodSel8,
+  kSize
+};
+
+template <typename TBC>
+uint32_t reduceSelectionBit(TBC const& bc)
+{
+  // input should be o2::aod::BcSels or o2::aod::EvSels.
+  uint32_t bitMap = 0;
+  if (bc.selection_bit(o2::aod::evsel::kIsTriggerTVX)) {
+    SETBIT(bitMap, o2::aod::pmevsel::EventSelectionFlags::kIsTriggerTVX);
+  }
+  if (bc.selection_bit(o2::aod::evsel::kNoTimeFrameBorder)) {
+    SETBIT(bitMap, o2::aod::pmevsel::EventSelectionFlags::kNoTimeFrameBorder);
+  }
+  if (bc.selection_bit(o2::aod::evsel::kNoITSROFrameBorder)) {
+    SETBIT(bitMap, o2::aod::pmevsel::EventSelectionFlags::kNoITSROFrameBorder);
+  }
+  if (bc.selection_bit(o2::aod::evsel::kNoSameBunchPileup)) {
+    SETBIT(bitMap, o2::aod::pmevsel::EventSelectionFlags::kNoSameBunchPileup);
+  }
+  if (bc.selection_bit(o2::aod::evsel::kIsGoodZvtxFT0vsPV)) {
+    SETBIT(bitMap, o2::aod::pmevsel::EventSelectionFlags::kIsGoodZvtxFT0vsPV);
+  }
+  if (bc.selection_bit(o2::aod::evsel::kIsVertexITSTPC)) {
+    SETBIT(bitMap, o2::aod::pmevsel::EventSelectionFlags::kIsVertexITSTPC);
+  }
+  if (bc.selection_bit(o2::aod::evsel::kIsVertexTRDmatched)) {
+    SETBIT(bitMap, o2::aod::pmevsel::EventSelectionFlags::kIsVertexTRDmatched);
+  }
+  if (bc.selection_bit(o2::aod::evsel::kIsVertexTOFmatched)) {
+    SETBIT(bitMap, o2::aod::pmevsel::EventSelectionFlags::kIsVertexTOFmatched);
+  }
+  if (bc.selection_bit(o2::aod::evsel::kNoCollInTimeRangeStandard)) {
+    SETBIT(bitMap, o2::aod::pmevsel::EventSelectionFlags::kNoCollInTimeRangeStandard);
+  }
+  if (bc.selection_bit(o2::aod::evsel::kNoCollInTimeRangeStrict)) {
+    SETBIT(bitMap, o2::aod::pmevsel::EventSelectionFlags::kNoCollInTimeRangeStrict);
+  }
+  if (bc.selection_bit(o2::aod::evsel::kNoCollInTimeRangeNarrow)) {
+    SETBIT(bitMap, o2::aod::pmevsel::EventSelectionFlags::kNoCollInTimeRangeNarrow);
+  }
+  if (bc.selection_bit(o2::aod::evsel::kNoCollInRofStandard)) {
+    SETBIT(bitMap, o2::aod::pmevsel::EventSelectionFlags::kNoCollInRofStandard);
+  }
+  if (bc.selection_bit(o2::aod::evsel::kNoCollInRofStrict)) {
+    SETBIT(bitMap, o2::aod::pmevsel::EventSelectionFlags::kNoCollInRofStrict);
+  }
+  if (bc.selection_bit(o2::aod::evsel::kNoHighMultCollInPrevRof)) {
+    SETBIT(bitMap, o2::aod::pmevsel::EventSelectionFlags::kNoHighMultCollInPrevRof);
+  }
+  if (bc.selection_bit(o2::aod::evsel::kIsGoodITSLayer3)) {
+    SETBIT(bitMap, o2::aod::pmevsel::EventSelectionFlags::kIsGoodITSLayer3);
+  }
+  if (bc.selection_bit(o2::aod::evsel::kIsGoodITSLayer0123)) {
+    SETBIT(bitMap, o2::aod::pmevsel::EventSelectionFlags::kIsGoodITSLayer0123);
+  }
+  if (bc.selection_bit(o2::aod::evsel::kIsGoodITSLayersAll)) {
+    SETBIT(bitMap, o2::aod::pmevsel::EventSelectionFlags::kIsGoodITSLayersAll);
+  }
+  return bitMap;
+}
 
 } // namespace pmevsel
 
@@ -66,15 +146,28 @@ namespace pmevent
 {
 DECLARE_SOA_COLUMN(CollisionId, collisionId, int);
 
-DECLARE_SOA_DYNAMIC_COLUMN(Sel8, sel8, [](uint64_t selection_bit) -> bool { return (selection_bit & BIT(o2::aod::evsel::kIsTriggerTVX)) && (selection_bit & BIT(o2::aod::evsel::kNoTimeFrameBorder)) && (selection_bit & BIT(o2::aod::evsel::kNoITSROFrameBorder)); });
+DECLARE_SOA_DYNAMIC_COLUMN(Sel8, sel8, [](uint64_t selection_bit, int runNumber = 500000) -> bool { return (selection_bit & BIT(o2::aod::evsel::kIsTriggerTVX)) && (selection_bit & BIT(o2::aod::evsel::kNoTimeFrameBorder)) && (runNumber < 568873 ? (selection_bit & BIT(o2::aod::evsel::kNoITSROFrameBorder)) : true); });
+
 } // namespace pmevent
 
 DECLARE_SOA_TABLE(PMEvents, "AOD", "PMEVENT", //!   Main event information table
                   o2::soa::Index<>, pmevent::CollisionId, bc::RunNumber, bc::GlobalBC, evsel::Selection, evsel::Rct, timestamp::Timestamp,
                   collision::PosZ,
-                  collision::NumContrib, evsel::NumTracksInTimeRange, evsel::SumAmpFT0CInTimeRange, pmevent::Sel8<evsel::Selection>);
+                  collision::NumContrib, evsel::NumTracksInTimeRange, evsel::SumAmpFT0CInTimeRange, pmevent::Sel8<evsel::Selection, bc::RunNumber>);
 
 using PMEvent = PMEvents::iterator;
+
+// Tables for event selection and event bookkeeping
+
+DECLARE_SOA_COLUMN(IsSelected, isSelected, bool); //! MB event selection info
+DECLARE_SOA_TABLE(PMEvSels, "AOD", "PMEVSEL",     //! joinable to o2::aod::Collisions
+                  IsSelected);
+using PMEvSel = PMEvSels::iterator;
+
+DECLARE_SOA_COLUMN(EventSelectionBit, eventSelectionBit, std::vector<uint64_t>); //! Event selection info stored in binned data for each DF
+DECLARE_SOA_TABLE(PMEvSelBits, "AOD", "PMEVSELBITS",                             //! produces binned data that can be loaded in analysis task for event counting
+                  EventSelectionBit);
+using PMEvSelBit = PMEvSelBits::iterator;
 
 namespace ccdbPcm
 {
