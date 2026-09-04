@@ -301,7 +301,7 @@ struct AssociatePhotonToEMEvent {
       for (int ig = 0; ig < ng; ig++) {
         eventIds(collision.globalIndex());
       } // end of photon loop
-    }   // end of collision loop
+    } // end of collision loop
   }
 
   // This struct is for both data and MC.
