@@ -9,5 +9,5 @@ WorkflowSpec defineDataProcessing(ConfigContext const& context)
   o2::pid::tof::TOFResponseImpl::metadataInfo.initMetadata(context);
 
   return WorkflowSpec{
-    adaptAnalysisTask<skimmerPrimaryElectronFromDalitzEE<o2::aod::EMPrimaryElectronsFromDalitz, o2::aod::EMPrimaryElectronsDeDxMC>>(context, TaskName{"skimmer-primary-electron-from-dalitzee"})};
+    adaptAnalysisTask<skimmerPrimaryElectronFromDalitzEE<o2::aod::EMPrimaryElectronsFromDalitzTmp, o2::aod::EMPrimaryElectronsDeDxMCTmp>>(context, TaskName{"skimmer-primary-electron-from-dalitzee-tmptable"})};
 }
