@@ -1075,7 +1075,7 @@ struct PhotonConversionBuilder {
 
       fillTrackTable<isMC>(pos, kfp_pos_DecayVtx, posdcaXY, posdcaZ); // positive leg first
       fillTrackTable<isMC>(ele, kfp_ele_DecayVtx, eledcaXY, eledcaZ); // negative leg second
-    }                                                                 // end of fill table
+    } // end of fill table
   }
 
   Preslice<o2::aod::V0s> perCollision = o2::aod::v0::collisionId;
@@ -1121,7 +1121,7 @@ struct PhotonConversionBuilder {
         // LOGF(info, "collision.globalIndex() = %d, v0.globalIndex() = %d, v0.posTrackId() = %d, v0.negTrackId() = %d", collision.globalIndex(), v0.globalIndex(), v0.posTrackId() , v0.negTrackId());
         fillV0Table<isMC, TBCs, TCollisions, TTracks>(v0, false);
       } // end of v0 loop
-    }   // end of collision loop
+    } // end of collision loop
 
     stored_v0Ids.reserve(pca_map.size());     // number of photon candidates per DF
     stored_fullv0Ids.reserve(pca_map.size()); // number of photon candidates per DF

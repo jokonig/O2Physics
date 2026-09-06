@@ -310,7 +310,7 @@ struct skimmerPrimaryElectronFromDalitzEE {
               emtofs(collision.globalIndex(), track.globalIndex(), mapTOFBetaReassociated[std::make_pair(collision.globalIndex(), track.globalIndex())], mapTOFNsigmaReassociated[std::make_pair(collision.globalIndex(), track.globalIndex())]);
             }
           } // end of track loop
-        }   // end of collision loop
+        } // end of collision loop
       } else {
         for (const auto& collision : collisions) {
           auto tracks_per_coll = tracks.sliceBy(perCol, collision.globalIndex());
@@ -323,7 +323,7 @@ struct skimmerPrimaryElectronFromDalitzEE {
             emtofs(collision.globalIndex(), track.globalIndex(), mapTOFBetaReassociated[std::make_pair(collision.globalIndex(), track.globalIndex())], mapTOFNsigmaReassociated[std::make_pair(collision.globalIndex(), track.globalIndex())]);
           }
         } // end of track loop
-      }   // end of collision loop
+      } // end of collision loop
     } else {
       if constexpr (withTTCA) {
         for (const auto& collision : collisions) {
@@ -337,7 +337,7 @@ struct skimmerPrimaryElectronFromDalitzEE {
             mapTOFBetaReassociated[std::make_pair(collision.globalIndex(), track.globalIndex())] = track.beta();
             emtofs(collision.globalIndex(), track.globalIndex(), mapTOFBetaReassociated[std::make_pair(collision.globalIndex(), track.globalIndex())], mapTOFNsigmaReassociated[std::make_pair(collision.globalIndex(), track.globalIndex())]);
           } // end of track loop
-        }   // end of collision loop
+        } // end of collision loop
       } else {
         for (const auto& collision : collisions) {
           auto tracks_per_coll = tracks.sliceBy(perCol, collision.globalIndex());
@@ -350,7 +350,7 @@ struct skimmerPrimaryElectronFromDalitzEE {
             emtofs(collision.globalIndex(), track.globalIndex(), mapTOFBetaReassociated[std::make_pair(collision.globalIndex(), track.globalIndex())], mapTOFNsigmaReassociated[std::make_pair(collision.globalIndex(), track.globalIndex())]);
           }
         } // end of track loop
-      }   // end of collision loop
+      } // end of collision loop
     }
   }
 
@@ -602,7 +602,7 @@ struct skimmerPrimaryElectronFromDalitzEE {
             acceptedNegTrackIds_per_collision.emplace_back(t2.globalIndex());
           }
         }
-      }      // end of ULS pairing
+      } // end of ULS pairing
     } else { // LS
       for (auto& [t1, t2] : combinations(o2::soa::CombinationsStrictlyUpperIndexPolicy(tracks1, tracks2))) {
         if (!checkTrack<isMC>(collision, t1) || !checkTrack<isMC>(collision, t2)) {
