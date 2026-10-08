@@ -13,10 +13,6 @@
 /// \brief write electrons for Dalitz into a temporary table that is then used for event skimming
 /// \author joshua.konig@cern.ch
 
-#include <Framework/WorkflowSpec.h>
-#include <Framework/ConfigContext.h>
-#include <Framework/AnalysisTask.h>
-
 #include "PWGEM/PhotonMeson/TableProducer/skimmerPrimaryElectronFromDalitzEE.h"
 
 #include "PID/PIDTOFParamService.h"

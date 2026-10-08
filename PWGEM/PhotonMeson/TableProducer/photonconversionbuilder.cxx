@@ -14,10 +14,6 @@
 /// \brief this task produces photon data table with KFParticle.
 /// \author Daiki Sekihata <daiki.sekihata@cern.ch>, Tokyo
 
-#include <Framework/WorkflowSpec.h>
-#include <Framework/ConfigContext.h>
-#include <Framework/AnalysisTask.h>
-
 #include "PWGEM/PhotonMeson/TableProducer/photonconversionbuilder.h"
 
 #include <Framework/AnalysisTask.h>
