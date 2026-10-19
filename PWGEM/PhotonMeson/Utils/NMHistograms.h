@@ -30,6 +30,7 @@
 #include <TString.h>
 
 #include <vector>
+#include <array>
 
 namespace o2::aod::pwgem::photonmeson::utils::nmhistogram
 {
