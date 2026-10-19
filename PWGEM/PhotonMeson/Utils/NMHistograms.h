@@ -29,8 +29,8 @@
 #include <TPDGCode.h>
 #include <TString.h>
 
-#include <vector>
 #include <array>
+#include <vector>
 
 namespace o2::aod::pwgem::photonmeson::utils::nmhistogram
 {
