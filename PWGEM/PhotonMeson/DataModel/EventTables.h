@@ -29,8 +29,8 @@
 #include <Rtypes.h> // for BIT
 
 #include <cstdint>
-#include <vector>
 #include <string>
+#include <vector>
 
 namespace o2::aod
 {
@@ -63,21 +63,21 @@ enum EventAcceptanceBits {
 };
 
 const std::vector<std::string> vecEventAccBitNames = {
-      "all",
-      "has MC coll",
-      "good zVtx",
-      "is FT0AND",
-      "No TFB",
-      "ITS ROFB",
-      "Same bunch Pileup",
-      "ZVtxFT0PV",
-      "No coll in time range",
-      "good track occi",
-      "Good FT0 occupancy",
-      "kTVXinEMC",
-      "Good centrality",
-      "Good RCT",
-      "Good Sel8"};
+  "all",
+  "has MC coll",
+  "good zVtx",
+  "is FT0AND",
+  "No TFB",
+  "ITS ROFB",
+  "Same bunch Pileup",
+  "ZVtxFT0PV",
+  "No coll in time range",
+  "good track occi",
+  "Good FT0 occupancy",
+  "kTVXinEMC",
+  "Good centrality",
+  "Good RCT",
+  "Good Sel8"};
 
 } // namespace pmevsel
 
